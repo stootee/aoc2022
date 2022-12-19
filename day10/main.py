@@ -166,8 +166,13 @@ step = 20
 signals = {}
 signal_strength = 0
 
+sprite_cycle = 0
+sprite_position = {}
+sprite = [0, 1, 2]
+
+
+
 for commands in i.splitlines():
-    print_colour = 'white'
     command = commands.split(' ')
 
     if len(command) > 1:
@@ -175,6 +180,9 @@ for commands in i.splitlines():
     else:
         command = command[0]
         value = None
+
+    for _sc in range(command_cycles[command]):
+        sprite_position[str(cycle + _sc + 1)] = [register, register + 1, register + 2]
 
     cycle += command_cycles[command]
 
@@ -190,9 +198,21 @@ for commands in i.splitlines():
 
     if increment_step:
         signals[str(step)] = signal_strength * step
-        print_colour = 'red'
         step += 40
 
-    # print(colored('%s, %s, %s, %s, %s' % (command, cycle, register, value, step), print_colour))
-
+#  part 1
 print(sum(signals.values()))
+
+# part 2
+sprite_left = 0
+# print(sprite_position)
+for k, v in sprite_position.items():
+    if int(k) - sprite_left in v:
+        print('#', end='')
+    else:
+        print(' ', end='')
+
+    if int(k) % 40 == 0:
+        sprite_left += 40
+        print()
+
